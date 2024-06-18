@@ -27,7 +27,9 @@ export default function Form({ onAddItem }) {
           </option>
         ))}
       </select>
-      <button onClick={handleSubmit}>ADD</button>
+      <button style={{ display: "none" }} onClick={handleSubmit}>
+        ADD
+      </button>
     </form>
   );
 }
