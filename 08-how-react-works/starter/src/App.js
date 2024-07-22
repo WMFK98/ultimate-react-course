@@ -32,14 +32,17 @@ function Tabbed({ content }) {
   return (
     <div>
       <div className="tabs">
-        <Tab num={0} activeTab={activeTab} onClick={setActiveTab} />
-        <Tab num={1} activeTab={activeTab} onClick={setActiveTab} />
-        <Tab num={2} activeTab={activeTab} onClick={setActiveTab} />
-        <Tab num={3} activeTab={activeTab} onClick={setActiveTab} />
+        <Tab key={1} num={0} activeTab={activeTab} onClick={setActiveTab} />
+        <Tab key={2} num={1} activeTab={activeTab} onClick={setActiveTab} />
+        <Tab key={3} num={2} activeTab={activeTab} onClick={setActiveTab} />
+        <Tab key={4} num={3} activeTab={activeTab} onClick={setActiveTab} />
       </div>
 
       {activeTab <= 2 ? (
-        <TabContent item={content.at(activeTab)} />
+        <TabContent
+          key={content.at(activeTab).summary}
+          item={content.at(activeTab)}
+        />
       ) : (
         <DifferentContent />
       )}
