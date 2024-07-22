@@ -66,7 +66,32 @@ function TabContent({ item }) {
   const [likes, setLikes] = useState(0);
 
   function handleInc() {
-    setLikes(likes + 1);
+    // setLikes(likes + 1); // not recomment
+    setLikes((likes) => likes + 1);
+  }
+
+  function handleUndo() {
+    setLikes(0);
+    setShowDetails(true);
+  }
+
+  function hanadleTripleInc() {
+    // setLikes(likes + 1);
+    // setLikes(likes + 1);
+    // setLikes(likes + 1);
+    // wroning becuase like is away be 0
+
+    // setLikes((likes) => likes + 1);
+    // setLikes((likes) => likes + 1);
+    // setLikes((likes) => likes + 1);
+
+    handleInc();
+    handleInc();
+    handleInc();
+  }
+
+  function handleUndoLater() {
+    setTimeout(handleUndo, 2000);
   }
 
   return (
@@ -82,13 +107,13 @@ function TabContent({ item }) {
         <div className="hearts-counter">
           <span>{likes} ❤️</span>
           <button onClick={handleInc}>+</button>
-          <button>+++</button>
+          <button onClick={hanadleTripleInc}>+++</button>
         </div>
       </div>
 
       <div className="tab-undo">
-        <button>Undo</button>
-        <button>Undo in 2s</button>
+        <button onClick={handleUndo}>Undo</button>
+        <button onClick={handleUndoLater}>Undo in 2s</button>
       </div>
     </div>
   );
