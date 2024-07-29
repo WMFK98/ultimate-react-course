@@ -4,9 +4,12 @@ const containerStyle = { display: "flex", alignItems: "center", gap: "16px" };
 const starContainerStyle = { display: "flex", gap: "4px" };
 
 export default function StarRating({
-  maxReting = 5,
+  isWatched,
+  defRating = 0,
+  maxRating = 5,
   color = "#fcc419",
   size = 48,
+  onSetRating,
 }) {
   const textStyle = {
     lineHegiht: "1",
@@ -14,17 +17,28 @@ export default function StarRating({
     color,
     fontSize: `${size / 1.5}px`,
   };
-  const [rating, setRating] = useState(0);
+  const [rating, setRating] = useState(defRating);
   const [temprating, setTemprating] = useState(0);
+  function handleSetRating(value) {
+    if (isWatched) return;
+    setRating(value);
+    onSetRating(value);
+  }
+
+  function handleHoverIn(value) {
+    if (isWatched) return;
+    setTemprating(value);
+  }
   return (
     <div style={containerStyle}>
       <div style={starContainerStyle}>
-        {Array.from({ length: maxReting }, (_, i) => (
+        {Array.from({ length: maxRating }, (_, i) => (
           <Star
+            onSetRating={onSetRating}
             isFull={temprating ? temprating >= i + 1 : rating >= i + 1}
             key={i}
-            onRate={() => setRating(i + 1)}
-            onHoverIn={() => setTemprating(i + 1)}
+            onRate={() => handleSetRating(i + 1)}
+            onHoverIn={() => handleHoverIn(i + 1)}
             onHoverOut={() => setTemprating(0)}
             color={color}
             size={size}
