@@ -76,30 +76,42 @@ export default function App() {
   function handleCloseMovie() {
     setSelectedId(null);
   }
+
+  // useEffect(function () {
+  //   document.addEventListener("keydown", function (e) {
+
+  //     if (e.code === "Escape") handleCloseMovie();
+  //   });
+  // }, []);
+
   useEffect(() => {
     if (query.length < 3) {
       setMovies([]);
       setError("");
       return;
     }
-
+    handleCloseMovie();
+    const controller = new AbortController();
     (async function fatchData() {
       setIsLoading(true);
       setError("");
       try {
         const res = await fetch(
-          `http://www.omdbapi.com/?apikey=${KEY}&s=${query}`
+          `http://www.omdbapi.com/?apikey=${KEY}&s=${query}`,
+          { signal: controller.signal }
         );
         console.log(res.ok);
         const data = await res.json();
         if (!data.Search) throw Error("Not Found");
         setMovies(data.Search);
       } catch (er) {
-        setError(er.message);
+        if (er.name !== "AbortError") setError(er.message);
       } finally {
         setIsLoading(false);
       }
     })();
+
+    return () => controller.abort();
   }, [query]);
 
   return (
@@ -177,6 +189,21 @@ function MovieDetails({
     onAddWatched(newWatchedMovie);
     onCloseMovie();
   }
+
+  useEffect(
+    function () {
+      function callback(e) {
+        if (e.code === "Escape") {
+          console.log("closing");
+          onCloseMovie();
+        }
+      }
+      document.addEventListener("keydown", callback);
+      return () => document.removeEventListener("keydown", callback);
+    },
+    [onCloseMovie]
+  );
+
   useEffect(
     function () {
       setUserRating(0);
@@ -255,24 +282,6 @@ function MovieDetails({
                   You rated with movie<span>⭐️</span>
                 </p>
               )}
-              {/* {!isWatched ? (
-              <>
-                <StarRating
-                  maxRating={10}
-                  size={24}
-                  onSetRating={setUserRating}
-                />
-                {userRating > 0 && (
-                  <button className="btn-add" onClick={handleAdd}>
-                    + Add to list
-                  </button>
-                )}
-              </>
-            ) : (
-              <p>
-                You rated with movie {watchedUserRating} <span>⭐️</span>
-              </p>
-            )} */}
             </div>
             <p>
               <em>{plot}</em>
