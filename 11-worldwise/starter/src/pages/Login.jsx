@@ -1,6 +1,7 @@
 import { useState } from "react";
 import styles from "./Login.module.css";
 import PageNav from "../components/PageNav";
+import { Link, NavLink } from "react-router-dom";
 
 export default function Login() {
   // PRE-FILL FOR DEV PURPOSES
@@ -32,7 +33,9 @@ export default function Login() {
         </div>
 
         <div>
-          <button>Login</button>
+          <Link to={"/app"}>
+            <button>Login</button>
+          </Link>
         </div>
       </form>
     </main>
