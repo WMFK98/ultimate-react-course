@@ -1,14 +1,12 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { faker } from "@faker-js/faker";
-
+import { usePosts, PostProvieder } from "./PostProvieder";
 function createRandomPost() {
   return {
     title: `${faker.hacker.adjective()} ${faker.hacker.noun()}`,
     body: faker.hacker.phrase(),
   };
 }
-
-const PostContext = createContext();
 
 function App() {
   const [isFakeDark, setIsFakeDark] = useState(false);
@@ -22,34 +20,26 @@ function App() {
   );
 
   return (
-    <PostContext.Provider
-      value={{
-        posts: searchedPosts,
-        onAddPost: handleAddPost,
-        onClearPosts: handleClearPosts,
-        searchQuery,
-        setSearchQuery,
-      }}
-    >
-      <section>
-        <button
-          onClick={() => setIsFakeDark((isFakeDark) => !isFakeDark)}
-          className="btn-fake-dark-mode"
-        >
-          {isFakeDark ? "☀️" : "🌙"}
-        </button>
+    <section>
+      <button
+        onClick={() => setIsFakeDark((isFakeDark) => !isFakeDark)}
+        className="btn-fake-dark-mode"
+      >
+        {isFakeDark ? "☀️" : "🌙"}
+      </button>
 
+      <PostProvieder>
         <Header />
         <Main />
         <Archive />
         <Footer />
-      </section>
-    </PostContext.Provider>
+      </PostProvieder>
+    </section>
   );
 }
 
 function Header() {
-  const { onClearPosts } = useContext(PostContext);
+  const { onClearPosts } = usePosts();
   return (
     <header>
       <h1>
@@ -65,7 +55,7 @@ function Header() {
 }
 
 function SearchPosts() {
-  const { searchQuery, setSearchQuery } = useContext(PostContext);
+  const { searchQuery, setSearchQuery } = usePosts();
   return (
     <input
       value={searchQuery}
@@ -76,7 +66,7 @@ function SearchPosts() {
 }
 
 function Results() {
-  const { posts } = useContext(PostContext);
+  const { posts } = usePosts();
   return <p>🚀 {posts.length} atomic posts found</p>;
 }
 
@@ -100,7 +90,7 @@ function Posts() {
 function FormAddPost() {
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
-  const { onAddPost } = useContext(PostContext);
+  const { onAddPost } = usePosts();
   const handleSubmit = function (e) {
     e.preventDefault();
     if (!body || !title) return;
@@ -127,7 +117,7 @@ function FormAddPost() {
 }
 
 function List() {
-  const { posts } = useContext(PostContext);
+  const { posts } = usePosts();
   return (
     <ul>
       {posts.map((post, i) => (
@@ -147,7 +137,7 @@ function Archive() {
     Array.from({ length: 100 }, () => createRandomPost())
   );
 
-  const { onAddPost } = useContext(PostContext);
+  const { onAddPost } = usePosts();
   const [showArchive, setShowArchive] = useState(false);
 
   return (
