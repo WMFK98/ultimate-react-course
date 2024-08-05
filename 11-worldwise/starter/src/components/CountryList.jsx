@@ -1,11 +1,12 @@
 import React from "react";
 import styles from "./CountryList.module.css";
 import Spinner from "./Spinner";
-import CityItem from "./CityItem";
 import Message from "./Message";
 import CountryItem from "./CountryItem";
+import { useCities } from "../contexts/CitiesContext";
 
-export default function CountryList({ isLoading, cities }) {
+export default function CountryList() {
+  const { isLoading, cities } = useCities();
   if (isLoading) return <Spinner />;
   const counties = cities.reduce((cur, { country, emoji }) => {
     if (cur.some((curCountry) => curCountry.country === country)) return cur;
