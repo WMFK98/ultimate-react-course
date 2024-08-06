@@ -66,7 +66,8 @@ function Form() {
       notes,
       position: { lat, lng },
     };
-    createCity(newCity);
+    await createCity(newCity);
+    navigate("/app/cities");
   }
   if (isGeoLocationLoading) return <Spinner />;
   if (geocodingError) return <Message message={geocodingError} />;
