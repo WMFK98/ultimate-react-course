@@ -20,7 +20,8 @@ export default function CityItem({ city }) {
       weekday: "long",
     }).format(new Date(date));
 
-  async function handleDeleteCity(id) {
+  async function handleDeleteCity(e) {
+    e.preventDefault();
     deleteCity(id);
   }
 
@@ -28,21 +29,19 @@ export default function CityItem({ city }) {
 
   return (
     <li>
-      <div
+      <Link
         className={`${styles.cityItem} ${
           currentCity.id === id && styles["cityItem--active"]
         }`}
+        to={`${id}?lat=${lat}&lng=${lng}`}
       >
         <span className={styles.emoji}>{emoji}</span>
         <span className={styles.name}>{cityName}</span>
         <time className={styles.date}>{formatDate(date)}</time>
-        <button
-          onClick={() => handleDeleteCity(city.id)}
-          className={styles.deleteBtn}
-        >
+        <button onClick={handleDeleteCity} className={styles.deleteBtn}>
           &times;
         </button>
-      </div>
+      </Link>
     </li>
   );
 }
