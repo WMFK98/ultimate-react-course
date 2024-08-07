@@ -49,6 +49,7 @@ function PostProvieder({ children }) {
 function usePosts() {
   const context = useContext(PostContext);
   if (context === undefined) throw new Error("It's outside");
+  return context;
 }
 
 export { PostProvieder, usePosts };

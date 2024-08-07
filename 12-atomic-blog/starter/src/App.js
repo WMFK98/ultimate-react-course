@@ -1,6 +1,8 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { faker } from "@faker-js/faker";
 import { usePosts, PostProvieder } from "./PostProvieder";
+import Test, { SlowComponent } from "./Test";
+
 function createRandomPost() {
   return {
     title: `${faker.hacker.adjective()} ${faker.hacker.noun()}`,
@@ -147,7 +149,10 @@ function Archive() {
         {showArchive ? "Hide archive posts" : "Show archive posts"}
       </button>
 
-      {showArchive && (
+      <Test>
+        <SlowComponent />
+      </Test>
+      {/* {showArchive && (
         <ul>
           {posts.map((post, i) => (
             <li key={i}>
@@ -158,7 +163,7 @@ function Archive() {
             </li>
           ))}
         </ul>
-      )}
+      )} */}
     </aside>
   );
 }
