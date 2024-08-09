@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { deposit, payloan, requestLoan, withdraw } from "./accountSlice";
 
 function AccountOperations() {
   const [depositAmount, setDepositAmount] = useState("");
@@ -6,14 +8,33 @@ function AccountOperations() {
   const [loanAmount, setLoanAmount] = useState("");
   const [loanPurpose, setLoanPurpose] = useState("");
   const [currency, setCurrency] = useState("USD");
+  const dispatch = useDispatch();
 
-  function handleDeposit() {}
+  const { loan: currentLoan, loanPurpose: currentLoanPurpose } = useSelector(
+    (store) => store.account
+  );
 
-  function handleWithdrawal() {}
+  function handleDeposit() {
+    if (!depositAmount) return;
+    dispatch(deposit(depositAmount));
+    setDepositAmount("");
+  }
 
-  function handleRequestLoan() {}
+  function handleWithdraw() {
+    if (!withdrawalAmount) return;
+    dispatch(withdraw(withdrawalAmount));
+    setWithdrawalAmount("");
+  }
 
-  function handlePayLoan() {}
+  function handleRequestLoan() {
+    if (!loanAmount || !loanPurpose) return;
+    dispatch(requestLoan(loanAmount, loanPurpose));
+    console.log(currentLoan);
+  }
+
+  function handlePayLoan() {
+    dispatch(payloan());
+  }
 
   return (
     <div>
@@ -45,9 +66,7 @@ function AccountOperations() {
             value={withdrawalAmount}
             onChange={(e) => setWithdrawalAmount(+e.target.value)}
           />
-          <button onClick={handleWithdrawal}>
-            Withdraw {withdrawalAmount}
-          </button>
+          <button onClick={handleWithdraw}>Withdraw {withdrawalAmount}</button>
         </div>
 
         <div>
@@ -67,7 +86,9 @@ function AccountOperations() {
         </div>
 
         <div>
-          <span>Pay back $X</span>
+          <span>
+            Pay back ${currentLoan} ({currentLoanPurpose}){" "}
+          </span>
           <button onClick={handlePayLoan}>Pay loan</button>
         </div>
       </div>
