@@ -1,12 +1,13 @@
 // Test ID: IIDSAT
 
-import { useLoaderData } from "react-router-dom";
-import { getOrder } from "../../services/apiRestaurant";
+import { useLoaderData } from 'react-router-dom';
+import { getOrder } from '../../services/apiRestaurant';
+import OrderItem from './OrderItem';
 import {
   calcMinutesLeft,
   formatCurrency,
   formatDate,
-} from "../../utils/helpers";
+} from '../../utils/helpers';
 
 // const order = {
 //   id: "ABCDEF",
@@ -57,31 +58,48 @@ function Order() {
     cart,
   } = order;
   const deliveryIn = calcMinutesLeft(estimatedDelivery);
-
   return (
-    <div>
+    <div className="flex h-full flex-col justify-between p-3 pt-10">
       <div>
-        <h2>Status</h2>
+        <div className="flex justify-between uppercase">
+          <h2 className="text-xl font-bold">Order #{id} status</h2>
+          <div className="space-x-3 font-bold">
+            {priority && (
+              <span className="rounded-xl bg-red-600 px-3 py-1 text-white">
+                Priority
+              </span>
+            )}
+            <span className="rounded-xl bg-green-700 px-3 py-1 text-white">
+              {status} order
+            </span>
+          </div>
+        </div>
 
-        <div>
-          {priority && <span>Priority</span>}
-          <span>{status} order</span>
+        <div className="flex justify-between bg-gray-200 px-4 py-7">
+          <p className="font-bold">
+            {deliveryIn >= 0
+              ? `Only ${calcMinutesLeft(estimatedDelivery)} minutes left 😃`
+              : 'Order should have arrived'}
+          </p>
+
+          <p className="text-gray-400">
+            (Estimated delivery: {formatDate(estimatedDelivery)})
+          </p>
         </div>
       </div>
 
-      <div>
-        <p>
-          {deliveryIn >= 0
-            ? `Only ${calcMinutesLeft(estimatedDelivery)} minutes left 😃`
-            : "Order should have arrived"}
-        </p>
-        <p>(Estimated delivery: {formatDate(estimatedDelivery)})</p>
-      </div>
+      <ul className="flex-auto space-y-5 overflow-y-scroll py-3">
+        {cart.map((order) => (
+          <OrderItem key={order.id} item={order} />
+        ))}
+      </ul>
 
-      <div>
+      <div className="bg-gray-200 px-4 py-7">
         <p>Price pizza: {formatCurrency(orderPrice)}</p>
         {priority && <p>Price priority: {formatCurrency(priorityPrice)}</p>}
-        <p>To pay on delivery: {formatCurrency(orderPrice + priorityPrice)}</p>
+        <p className="text-lg font-bold">
+          To pay on delivery: {formatCurrency(orderPrice + priorityPrice)}
+        </p>
       </div>
     </div>
   );
