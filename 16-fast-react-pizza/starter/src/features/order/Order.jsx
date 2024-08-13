@@ -90,7 +90,7 @@ function Order() {
 
       <ul className="flex-auto space-y-5 px-2 py-3">
         {cart.map((order) => (
-          <OrderItem key={order.id} item={order} />
+          <OrderItem key={order.pizzaId} item={order} />
         ))}
       </ul>
 
