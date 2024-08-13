@@ -60,7 +60,7 @@ function Order() {
   const deliveryIn = calcMinutesLeft(estimatedDelivery);
   return (
     <div className="flex h-full flex-col justify-between p-3 pt-10">
-      <div>
+      <div className="flex flex-col gap-3">
         <div className="flex justify-between uppercase">
           <h2 className="text-xl font-bold">Order #{id} status</h2>
           <div className="space-x-3 font-bold">
@@ -88,7 +88,7 @@ function Order() {
         </div>
       </div>
 
-      <ul className="flex-auto space-y-5 overflow-y-scroll py-3">
+      <ul className="flex-auto space-y-5 px-2 py-3">
         {cart.map((order) => (
           <OrderItem key={order.id} item={order} />
         ))}
