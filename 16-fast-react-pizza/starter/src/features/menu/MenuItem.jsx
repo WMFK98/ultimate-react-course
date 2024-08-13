@@ -4,6 +4,7 @@ import { formatCurrency } from '../../utils/helpers';
 function MenuItem({ pizza }) {
   const { id, name, unitPrice, ingredients, soldOut, imageUrl } = pizza;
 
+  function handleOnClick() {}
   return (
     <>
       <li className="flex justify-between gap-2 p-2">
@@ -21,8 +22,8 @@ function MenuItem({ pizza }) {
             {!soldOut ? <p>{formatCurrency(unitPrice)}</p> : <p>Sold out</p>}
           </div>
         </div>
-        <div className="mt-auto h-24">
-          <Button>Add To Cart</Button>
+        <div className="mb-2 mt-auto flex h-12">
+          {!soldOut && <Button onClick={handleOnClick}>Add To Cart</Button>}
         </div>
       </li>
       <hr />

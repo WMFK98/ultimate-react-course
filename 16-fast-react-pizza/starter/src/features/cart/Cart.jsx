@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import Button from '../../ui/Button';
 import CartItem from './CartItem';
+import { useSelector } from 'react-redux';
 
 const fakeCart = [
   {
@@ -27,6 +28,7 @@ const fakeCart = [
 ];
 
 function Cart() {
+  const username = useSelector((state) => state.user.username);
   const carts = fakeCart;
 
   return (
@@ -38,7 +40,7 @@ function Cart() {
         &larr; Back to menu
       </Link>
 
-      <h2 className="text-lg font-bold">Your cart, %NAME%</h2>
+      <h2 className="text-lg font-bold">Your cart, {username}</h2>
       <ul className="space-y-5">
         {carts.map((cart) => (
           <CartItem item={cart} key={cart.pizzaId} />
