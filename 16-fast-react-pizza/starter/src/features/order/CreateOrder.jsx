@@ -2,11 +2,12 @@ import { useState } from 'react';
 import { Form, redirect, useActionData, useNavigation } from 'react-router-dom';
 import { createOrder } from '../../services/apiRestaurant';
 import Button from '../../ui/Button';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { clearCart, getCart, getTotalCartPrice } from '../cart/cartSlice';
 import EmptyCart from '../cart/EmptyCart';
 import store from '../../store';
 import { formatCurrency } from '../../utils/helpers';
+import { fetchAddress } from '../user/userSlice';
 // https://uibakery.io/regex-library/phone-number
 const isValidPhone = (str) =>
   /^\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}$/.test(
@@ -38,12 +39,20 @@ const isValidPhone = (str) =>
 // ];
 
 function CreateOrder() {
-  const username = useSelector((state) => state.user.username);
+  const {
+    username,
+    status: addressStatus,
+    position,
+    address,
+    error: errorAddress,
+  } = useSelector((state) => state.user);
+  const isLoadingAddress = addressStatus === 'loading';
   const [withPriority, setWithPriority] = useState(false);
   const formErrors = useActionData();
   const cart = useSelector(getCart);
   const isSubmitting = useNavigation().state === 'submitting';
   const totalPrice = useSelector(getTotalCartPrice);
+  const dispatch = useDispatch();
   if (!cart.length) return <EmptyCart />;
   return (
     <div className="space-y-5 p-3">
@@ -74,9 +83,36 @@ function CreateOrder() {
         </div>
 
         <div className="flex items-center">
-          <label className="w-[150px]">Address</label>
-          <input className="input" type="text" name="address" required />
+          <label className="w-[140px]">Address</label>
+          <div className="flex-co flex flex-auto items-center gap-2">
+            <input
+              className="input flex-1"
+              type="text"
+              name="address"
+              required
+              disabled={isLoadingAddress}
+              defaultValue={address}
+            />
+
+            {!position.latitude && !position.longtitude && (
+              <Button
+                disabled={isLoadingAddress}
+                onClick={(e) => {
+                  e.preventDefault();
+
+                  dispatch(fetchAddress());
+                }}
+              >
+                {isLoadingAddress ? 'Loading...' : 'Get postion'}
+              </Button>
+            )}
+          </div>
         </div>
+        {addressStatus === 'error' && (
+          <p className="rounded-2xl bg-red-100 px-4 py-2 text-red-600">
+            {errorAddress}
+          </p>
+        )}
 
         <div className="space-x-2">
           <input

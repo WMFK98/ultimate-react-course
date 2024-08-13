@@ -6,9 +6,15 @@ function OrderItem({ item, isLoadingIngredients, ingredients }) {
   return (
     <>
       <li className="flex justify-between">
-        <p>
-          <span>{quantity}&times;</span> {name}
-        </p>
+        <div>
+          <p>
+            {quantity}&times; {name}
+          </p>
+          <p className="italic text-gray-500">
+            {' '}
+            {isLoadingIngredients ? 'loading...' : ingredients?.join(', ')}
+          </p>
+        </div>
         <p>{formatCurrency(totalPrice)}</p>
       </li>
       <hr />
