@@ -1,6 +1,6 @@
-import { Children, createContext, useContext, useState } from "react";
-import { faker } from "@faker-js/faker";
-const PostContext = createContext({ Children });
+import { Children, createContext, useContext, useState } from 'react';
+import { faker } from '@faker-js/faker';
+const PostContext = createContext();
 function createRandomPost() {
   return {
     title: `${faker.hacker.adjective()} ${faker.hacker.noun()}`,
@@ -12,7 +12,7 @@ function PostProvieder({ children }) {
   const [posts, setPosts] = useState(() =>
     Array.from({ length: 30 }, () => createRandomPost())
   );
-  const [searchQuery, setSearchQuery] = useState("");
+  const [searchQuery, setSearchQuery] = useState('');
 
   const searchedPosts =
     searchQuery.length > 0
@@ -49,6 +49,7 @@ function PostProvieder({ children }) {
 function usePosts() {
   const context = useContext(PostContext);
   if (context === undefined) throw new Error("It's outside");
+  return context;
 }
 
 export { PostProvieder, usePosts };

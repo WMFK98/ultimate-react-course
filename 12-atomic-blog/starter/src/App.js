@@ -1,6 +1,6 @@
-import { createContext, useContext, useEffect, useState } from "react";
-import { faker } from "@faker-js/faker";
-import { usePosts, PostProvieder } from "./PostProvieder";
+import { createContext, useContext, useEffect, useState } from 'react';
+import { faker } from '@faker-js/faker';
+import { usePosts, PostProvieder } from './PostProvieder';
 function createRandomPost() {
   return {
     title: `${faker.hacker.adjective()} ${faker.hacker.noun()}`,
@@ -14,7 +14,7 @@ function App() {
   // Whenever `isFakeDark` changes, we toggle the `fake-dark-mode` class on the HTML element (see in "Elements" dev tool).
   useEffect(
     function () {
-      document.documentElement.classList.toggle("fake-dark-mode");
+      document.documentElement.classList.toggle('fake-dark-mode');
     },
     [isFakeDark]
   );
@@ -25,7 +25,7 @@ function App() {
         onClick={() => setIsFakeDark((isFakeDark) => !isFakeDark)}
         className="btn-fake-dark-mode"
       >
-        {isFakeDark ? "☀️" : "🌙"}
+        {isFakeDark ? '☀️' : '🌙'}
       </button>
 
       <PostProvieder>
@@ -88,15 +88,15 @@ function Posts() {
 }
 
 function FormAddPost() {
-  const [title, setTitle] = useState("");
-  const [body, setBody] = useState("");
+  const [title, setTitle] = useState('');
+  const [body, setBody] = useState('');
   const { onAddPost } = usePosts();
   const handleSubmit = function (e) {
     e.preventDefault();
     if (!body || !title) return;
     onAddPost({ title, body });
-    setTitle("");
-    setBody("");
+    setTitle('');
+    setBody('');
   };
 
   return (
@@ -144,7 +144,7 @@ function Archive() {
     <aside>
       <h2>Post archive</h2>
       <button onClick={() => setShowArchive((s) => !s)}>
-        {showArchive ? "Hide archive posts" : "Show archive posts"}
+        {showArchive ? 'Hide archive posts' : 'Show archive posts'}
       </button>
 
       {showArchive && (
